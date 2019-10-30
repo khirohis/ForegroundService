@@ -29,7 +29,9 @@
 
         <service
             android:name=".MyForegroundService"
-            android:exported="true">
+            android:exported="false"
+            android:process = ":ForegroundService"
+            >
         </service>
 
     </application>

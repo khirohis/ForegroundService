@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SubActivity.class);
             startActivity(intent);
         });
-
-        bindMyForegroundService();
     }
 
     @Override
@@ -55,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onResume");
 
         super.onResume();
+
+        bindMyForegroundService();
     }
 
     @Override
@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onPause");
 
         super.onPause();
+
+        unbindMyForegroundService();
     }
 
     @Override
@@ -76,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onDestroy");
 
         super.onDestroy();
-
-        unbindMyForegroundService();
     }
 
 

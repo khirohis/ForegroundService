@@ -10,10 +10,10 @@ import android.util.Log;
 public class ForegroundServiceApplication extends Application {
     private static final String TAG = ForegroundServiceApplication.class.getSimpleName();
 
-    private static final String CHANNEL_ID = "ForegroundService Channel ID";
-    private static final String CHANNEL_NAME = "ForegroundService Channel Name";
-    private static final String CHANNEL_DESCRIPTION = "ForegroundService Channel Description";
-    private static final int CHANNEL_IMPORTANCE = NotificationManager.IMPORTANCE_DEFAULT;
+    public static final String CHANNEL_ID = "ForegroundService Channel ID";
+    public static final String CHANNEL_NAME = "ForegroundService Channel Name";
+    public static final String CHANNEL_DESCRIPTION = "ForegroundService Channel Description";
+    public static final int CHANNEL_IMPORTANCE = NotificationManager.IMPORTANCE_DEFAULT;
 
     @Override
     public void onCreate() {

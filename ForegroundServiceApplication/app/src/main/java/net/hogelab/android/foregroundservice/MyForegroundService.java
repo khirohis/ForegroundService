@@ -1,7 +1,7 @@
 package net.hogelab.android.foregroundservice;
 
+import android.app.Notification;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,15 +12,21 @@ import android.os.Messenger;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+import java.lang.ref.WeakReference;
 
 public class MyForegroundService extends Service {
     private static final String TAG = MyForegroundService.class.getSimpleName();
 
-    static class MessageHandler extends Handler {
-        private Context applicationContext;
+    private static int MY_FOREGROUND_SERVICE_ID = 1;
 
-        MessageHandler(Context context) {
-            applicationContext = context.getApplicationContext();
+
+    static class MessageHandler extends Handler {
+        private final WeakReference<Service> service;
+
+        MessageHandler(Service service) {
+            this.service = new WeakReference<>(service);
         }
 
         @Override
@@ -56,7 +62,7 @@ public class MyForegroundService extends Service {
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            // Notification
+            startForeground(MY_FOREGROUND_SERVICE_ID, createDefaultNotification());
         }
 
         return START_STICKY;
@@ -88,6 +94,17 @@ public class MyForegroundService extends Service {
     public boolean onUnbind(Intent intent) {
         Log.d(TAG, "onUnbind");
 
+        messenger = null;
+
         return false;
+    }
+
+
+    private Notification createDefaultNotification() {
+        return new NotificationCompat.Builder(
+                this,
+                ForegroundServiceApplication.CHANNEL_ID)
+                .setContentTitle(ForegroundServiceApplication.CHANNEL_NAME)
+                .build();
     }
 }
