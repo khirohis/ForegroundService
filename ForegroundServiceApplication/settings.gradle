@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='Foreground Service'
+rootProject.name='Foreground Service Application'

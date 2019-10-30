@@ -15,8 +15,9 @@ public class SubActivity extends AppCompatActivity {
     private static final String TAG = SubActivity.class.getSimpleName();
 
     private MyForegroundServiceConnection mServiceConnection = new MyForegroundServiceConnection();
-    private IBinder binder;
+    private boolean isServiceBindRequested;
     private boolean isServiceBound;
+    private IBinder binder;
 
 
     @Override
@@ -25,13 +26,11 @@ public class SubActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sub);
         TextView textView = findViewById(R.id.textview_message);
         textView.setOnClickListener((view) -> {
             finish();
         });
-
-        bindMyForegroundService();
     }
 
     @Override
@@ -53,6 +52,8 @@ public class SubActivity extends AppCompatActivity {
         Log.d(TAG, "onResume");
 
         super.onResume();
+
+        bindMyForegroundService();
     }
 
     @Override
@@ -60,6 +61,8 @@ public class SubActivity extends AppCompatActivity {
         Log.d(TAG, "onPause");
 
         super.onPause();
+
+        unbindMyForegroundService();
     }
 
     @Override
@@ -74,8 +77,6 @@ public class SubActivity extends AppCompatActivity {
         Log.d(TAG, "onDestroy");
 
         super.onDestroy();
-
-        unbindMyForegroundService();
     }
 
 
@@ -89,14 +90,18 @@ public class SubActivity extends AppCompatActivity {
             bindService(new Intent(SubActivity.this, MyForegroundService.class),
                     mServiceConnection,
                     Context.BIND_AUTO_CREATE);
+
+            isServiceBindRequested = true;
         }
     }
 
     private void unbindMyForegroundService() {
-        if (isServiceBound) {
+        if (isServiceBindRequested) {
             Log.d(TAG, "unbindService");
 
             unbindService(mServiceConnection);
+
+            isServiceBindRequested = false;
             isServiceBound = false;
         }
     }
