@@ -12,8 +12,13 @@ import android.os.Messenger;
 import android.util.Log;
 import android.widget.TextView;
 
+import net.hogelab.android.foregroundservice.databinding.ActivityMainBinding;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private MainViewModel viewModel;
+    private ActivityMainBinding binding;
 
     private MyForegroundServiceConnection mServiceConnection = new MyForegroundServiceConnection();
     private IBinder binder;
@@ -26,12 +31,11 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        TextView textView = findViewById(R.id.textview_message);
-        textView.setOnClickListener((view) -> {
-            Intent intent = new Intent(MainActivity.this, SubActivity.class);
-            startActivity(intent);
-        });
+        viewModel = new MainViewModel(this);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding.setViewModel(viewModel);
+        setContentView(binding.getRoot());
     }
 
     @Override
